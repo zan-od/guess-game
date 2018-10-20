@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Questions</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<a th:href="@{/admin/question/add}">Add new question</a>
+<div class="container-fluid tasks-table-body">
+    <div class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 bd-content justify-content-center">
+        <table class="table table-sm table-hover">
+            <tbody>
+                <tr th:each="question: ${questions}">
+                    <td>
+                        <span th:value="${question.id}"></span>
+                    </td>
+                    <td>
+                        <a th:text="${question.question}" th:href="@{/admin/question/edit/{questionId}(questionId=${question.id})}">Edit question</a>
+                    </td>
+                    <td>
+                        <a th:text="${question.answer}" th:href="@{/admin/question/edit/{questionId}(questionId=${question.id})}">Edit question</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
