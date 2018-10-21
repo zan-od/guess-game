@@ -27,11 +27,16 @@
 
                 <div class="container">
                     <div class="row">
-                        <a th:href="@{/game/add}" class="btn btn-primary">Start new game</a>
+                        <a th:href="@{/game/create}" class="btn btn-primary">Start new game</a>
                     </div>
                 </div>
 
-                <!--<a th:href="@{/game/{gameId}/join(gameId=${game.id})}">Join existing game</a>-->
+                <br/>
+                <span><strong>Active games:</strong></span>
+                <div th:each="game: ${activeGames}">
+                    <span th:text="'Game ' + ${game.id}">Game 1</span>
+                    <a class="btn btn-sm btn-primary" th:href="@{/game/{gameId}/join(gameId=${game.id})}">Join game</a>
+                </div>
             </div>
         </div>
     </div>

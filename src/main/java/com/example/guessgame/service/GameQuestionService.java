@@ -11,4 +11,8 @@ public interface GameQuestionService {
     List<GameQuestion> listQuestions();
 
     GameQuestion getQuestion(Long id);
+
+    GameQuestion getRandomQuestion();
+
+    boolean isCorrectAnswer(GameQuestion question, String answer);
 }

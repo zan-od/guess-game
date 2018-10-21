@@ -8,4 +8,8 @@ public interface UserService {
 
     User findUser(String username);
 
+    User getCurrentUser();
+
+    void updateUserStatistics(User player, boolean isWinner);
+
 }

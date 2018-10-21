@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: head('Game')">
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/main.css"/>
+</head>
+<body>
+<div class="container standard-page-container">
+    <div class="row justify-content-md-center">
+        <div class="col col-2 players">
+            <div><strong>Players:</strong></div>
+            <div th:each="player: ${game.players}">
+                <span th:text="${player.username}">Player 1</span>
+            </div>
+        </div>
+        <div class="col col-6 game">
+            <div class="row">
+                <a th:href="@{/game/{gameId}/start(gameId=${game.id})}" id="btnStart" class="btn btn-lg btn-success" th:classappend="${game.isStarted() ? 'disabled': ''}">Start game</a>
+                <a th:href="@{/game/{gameId}/exit(gameId=${game.id})}" id="btnExit" class="btn btn-lg btn-secondary">Exit game</a>
+                <!--<a th:href="@{/game/{gameId}/exit(gameId=${game.id})}" id="btnExit" class="btn btn-lg btn-secondary" th:classappend="${game.isStarted() && (!game.isFinished()) ? 'disabled': ''}">Exit game</a>-->
+            </div>
+            <div class="row question" th:if="${game.isStarted()}">
+                <div class="col">
+                    <div class="row question-label">Question:</div>
+                    <div class="row question-text" th:text="${game.question.question}">Be or not to be? That's question</div>
+                </div>
+            </div>
+            <div class="row answer" th:if="${game.isStarted()}">
+                <div class="col">
+                    <div class="row answer-label">Answer:</div>
+                    <div class="row answer-text">
+                        <input type="text" id="answer">
+                        <input type="button" id="btnSend" class="btn btn-lg btn-primary" value="Send answer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col-1 time">
+            <div class="time-label"><strong>Time:</strong></div>
+            <div class="time-text">00:00</div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    var timer;
+
+    /*<![CDATA[*/
+    var gameStateUrl = /*[[@{/game/{gameId}/getState(gameId=${game.id})}]]*/ 'gameStateUrl';
+    var checkAnswerUrl = /*[[@{/game/{gameId}/checkAnswer(gameId=${game.id})}]]*/ 'checkAnswerUrl';
+    var playerName = /*[[${#authentication.name}]]*/ '';
+    var gameStarted = /*[[${game.isStarted()}]]*/ false;
+    /*]]>*/
+
+    $(document).ready(
+        function(){
+            console.log('ready');
+            startTimer();
+        }
+    );
+
+    function startTimer(){
+        timer = setInterval(function(){
+            updateData();
+        }, 1000);
+    }
+
+    function updateData() {
+        $.get( gameStateUrl )
+            .done(function( data ) {
+                //alert( "Data Loaded: " + data );
+                console.log(data);
+                
+                if (!gameStarted){
+                    if (data.started){
+                        location.reload();
+                    }
+                } 
+                
+                if (data.finished){
+                    finishGame(data);
+                } 
+
+                $(".time-text").text(data.time);
+            });
+    }
+
+    $('#btnSend').click(function() {
+        var answer = $('#answer').val();
+        $.get( checkAnswerUrl + '?answer=' + answer)
+            .done(function( data ) {
+                console.log(data);
+                
+                if (data.finished){
+                    finishGame(data);
+                } else {
+                    alert('Wrong answer! Try again.');
+                }
+
+                $(".time-text").text(data.time);
+            });
+    });
+    
+    function finishGame(data) {
+        clearInterval(timer);
+
+        if (data.winnerName === playerName){
+            alert('Congratulations! You won!!!');
+        } else {
+            alert('Sorry! Player ' + data.winnerName + ' won!!!');
+        }
+
+        $('#btnSend').attr('disabled', 'disabled');
+        //$('#btnExit').removeClass('disabled');
+    }
+
+</script>
+
+</body>
+</html>

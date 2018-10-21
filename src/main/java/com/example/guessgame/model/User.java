@@ -1,6 +1,7 @@
 package com.example.guessgame.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -12,18 +13,23 @@ public class User {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name="username")
     private String username;
 
+    @NotNull
     @Column(name="password")
     private String password;
 
+    @NotNull
     @Column(name="played_games")
-    private Integer playedGamesCount;
+    private Integer playedGamesCount = 0;
 
+    @NotNull
     @Column(name="wins")
-    private Integer winsCount;
+    private Integer winsCount = 0;
 
+    @NotNull
     @Column(name="is_admin")
     private boolean isAdministrator;
 

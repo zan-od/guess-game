@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class GameQuestionServiceImpl implements GameQuestionService{
@@ -38,5 +39,28 @@ public class GameQuestionServiceImpl implements GameQuestionService{
     public GameQuestion getQuestion(Long id) {
         //TODO use Optional
         return gameQuestionRepository.findById(id).get();
+    }
+
+    @Override
+    public GameQuestion getRandomQuestion() {
+        List<GameQuestion> list = listQuestions();
+
+        Random random = new Random();
+        int index = random.nextInt(list.size());
+
+        return list.get(index);
+    }
+
+    @Override
+    public boolean isCorrectAnswer(GameQuestion question, String answer) {
+        if (answer == null){
+            return false;
+        }
+
+        return getTrimLowerCase(answer).equals(getTrimLowerCase(question.getAnswer()));
+    }
+
+    private String getTrimLowerCase(String value){
+        return value.trim().toLowerCase();
     }
 }

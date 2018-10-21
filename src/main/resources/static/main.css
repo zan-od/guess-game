@@ -5,3 +5,55 @@
 h5.user {
     margin-right: 10px;
 }
+
+a#btnStart {
+    margin-right: 10px;
+}
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.standard-page-container {
+    margin-top: 20px;
+}
+
+.time-label {
+    font-size: large;
+}
+
+.time-text {
+    font-size: 26pt;
+    color: blue;
+}
+
+.row .question {
+    margin-top: 50px;
+}
+
+.question-label {
+    font-size: 15pt;
+}
+
+.question-text {
+    font-size: 15pt;
+    margin-top: 5px;
+    color: green;
+}
+
+.row .answer {
+    margin-top: 50px;
+}
+
+.answer-label {
+    font-size: 15pt;
+}
+
+.answer-text {
+    margin-top: 5px;
+}
+
+input#btnSend {
+    margin-left: 5px;
+}

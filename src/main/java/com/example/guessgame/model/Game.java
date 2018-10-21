@@ -1,8 +1,10 @@
 package com.example.guessgame.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="games")
@@ -13,11 +15,12 @@ public class Game {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @ManyToMany
     @JoinTable(name = "game_players",
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
-    private List<User> players;
+    private Set<User> players;
 
     @OneToOne
     @JoinColumn(name = "winner_id")
@@ -29,9 +32,13 @@ public class Game {
     @Column(name = "finish_time")
     private LocalDateTime finishTime;
 
+    @NotNull
     @OneToOne
     @JoinColumn(name = "question_id")
     private GameQuestion question;
+
+    @Column(name = "closed", nullable = false)
+    private boolean closed;
 
     public Long getId() {
         return id;
@@ -41,11 +48,11 @@ public class Game {
         this.id = id;
     }
 
-    public List<User> getPlayers() {
+    public Set<User> getPlayers() {
         return players;
     }
 
-    public void setPlayers(List<User> players) {
+    public void setPlayers(Set<User> players) {
         this.players = players;
     }
 
@@ -80,4 +87,21 @@ public class Game {
     public void setQuestion(GameQuestion question) {
         this.question = question;
     }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+    }
+
+    public boolean isStarted(){
+        return startTime != null;
+    }
+
+    public boolean isFinished(){
+        return finishTime != null;
+    }
+
 }
