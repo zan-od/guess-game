@@ -52,10 +52,6 @@ public class GameServiceImpl implements GameService {
     @Override
     public void joinGame(Game game, User player) {
 
-        if (game.isStarted()){
-            return;
-        }
-
         Set<User> players = game.getPlayers();
         if (!players.contains(player)){
             players.add(player);
