@@ -1,7 +1,11 @@
 package com.example.guessgame.service;
 
-import org.springframework.stereotype.Service;
+import com.example.guessgame.model.User;
 
-@Service
-public class UserService {
+public interface UserService {
+
+    void saveUser(User user);
+
+    User findUser(String username);
+
 }

@@ -24,6 +24,12 @@ public class User {
     @Column(name="wins")
     private Integer winsCount;
 
+    @Column(name="is_admin")
+    private boolean isAdministrator;
+
+    @Transient
+    private String confirmPassword;
+
     @ManyToMany
     @JoinTable(name = "game_players",
             joinColumns = @JoinColumn(name = "player_id"),
@@ -76,5 +82,21 @@ public class User {
 
     public void setGames(List<Game> games) {
         this.games = games;
+    }
+
+    public boolean isAdministrator() {
+        return isAdministrator;
+    }
+
+    public void setAdministrator(boolean administrator) {
+        isAdministrator = administrator;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

@@ -1,7 +1,4 @@
 package com.example.guessgame.service;
 
-import org.springframework.stereotype.Service;
-
-@Service
-public class GameService {
+public interface GameService {
 }

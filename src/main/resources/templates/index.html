@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="header :: head('Welcome to \'Guess the answer\' game')">
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<div class="container standard-page-container">
+    <div class="row justify-content-md-center">
+        <div class="col-8">
+            <h1 class="welcome"> Welcome to <strong>Guess the answer</strong> game!</h1>
+
+            <br>
+
+            <div sec:authorize="!isAuthenticated()">
+                <p>Please <a href="/login" class="btn btn-primary btn-sm">login</a> or <a href="/registration" class="btn btn-primary btn-sm">register</a> to start the game</p>
+            </div>
+
+            <div sec:authorize="isAuthenticated()">
+                <div class="container">
+                    <div class="row">
+                        <h5 class="user">Hello, <span th:text="${#authentication.name}">User</span></h5>
+                        <a href="/logout" class="btn btn-primary btn-sm">Logout</a>
+                    </div>
+                </div>
+
+                <br/>
+
+                <div class="container">
+                    <div class="row">
+                        <a th:href="@{/game/add}" class="btn btn-primary">Start new game</a>
+                    </div>
+                </div>
+
+                <!--<a th:href="@{/game/{gameId}/join(gameId=${game.id})}">Join existing game</a>-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
